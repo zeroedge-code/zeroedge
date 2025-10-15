@@ -1,8 +1,8 @@
 {
-  "name": "zeroedge-portfolio-carus",
+  "name": "zeroedge-portfolio-carus-skinned",
   "version": "1.0.0",
   "private": true,
-  "description": "ZeroEdge Carus-style portfolio with ASTER card",
+  "description": "ZeroEdge portfolio skinned with uploaded assets",
   "scripts": {
     "start": "node server.js"
   },
