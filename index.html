@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZeroEdge — ASTER Performance</title>
+    <meta name="description" content="ASTER live price and 180‑day performance" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <header class="card-header">
+          <div>
+            <h1 class="title">ASTER</h1>
+            <p class="subtitle">Live on CoinGecko • 180‑Day Performance</p>
+          </div>
+          <div class="price-block">
+            <span id="price" class="price">$—</span>
+            <span class="badge" id="returnBadge">+100 %</span>
+          </div>
+        </header>
+
+        <div id="chart"></div>
+
+        <footer class="card-footer">
+          <div class="legend">
+            <span class="dot entry"></span> Entry $0.70
+            <span class="dot ath"></span> ATH $2.45
+          </div>
+          <div class="meta">
+            <span id="lastUpdated">Last update: —</span>
+            <button id="refreshBtn" class="refresh">Refresh now</button>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
