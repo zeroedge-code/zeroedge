@@ -5,8 +5,8 @@ from datetime import datetime
 app = Flask(__name__)
 
 ENTRY_PRICE = 0.70
-QUANTITY = 1000
-SYMBOL = "ASTR"
+QUANTITY = 8090
+SYMBOL = "ASTER"
 CMC_API_KEY = os.getenv("CMC_API_KEY")
 CMC_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
 HISTORY_FILE = "data.json"
