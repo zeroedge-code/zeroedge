@@ -1,0 +1,13 @@
+{
+  "asOf": "2025-10-15",
+  "positions": [
+    {
+      "ticker": "ASTER",
+      "name": "Aster",
+      "quantity": 9000,
+      "entryPrice": 0.70,
+      "currentPrice": 1.45,
+      "entryDate": "2024-01-01"
+    }
+  ]
+}
