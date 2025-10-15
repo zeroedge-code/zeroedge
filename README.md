@@ -1,26 +1,35 @@
-# ZeroEdge — Full Portfolio Bundle
 
-This bundle includes:
-- `/site` — your uploaded portfolio (original zip contents)
-- `/aster-card` — the ASTER performance card (CoinGecko + ApexCharts)
-- `server.js` — Express static server serving `/site` at root, `/aster-card` at `/aster-card`
-- `Procfile`, `package.json` — ready for Railway deploy
+# zeroedge crypto — Dark Minimal Portfolio (Next.js 14 + Tailwind + Framer Motion)
+
+A sleek, high-contrast site inspired by luxury portfolio aesthetics.
+
+## Stack
+- Next.js 14 (App Router)
+- Tailwind CSS
+- Framer Motion (scroll/fade animations)
+- Lucide icons
 
 ## Run locally
-
 ```bash
 npm install
-npm start
-# open http://localhost:3000
-# your portfolio at / (serves /site)
-# ASTER card at /aster-card
+npm run dev
 ```
 
-## Deploy to Railway
+## Build & start
+```bash
+npm run build
+npm start
+```
 
-1. Push this folder to a Git repo
-2. On Railway: New Project → Deploy from GitHub
-3. It will use `web: node server.js` automatically
-4. Open your Railway URL — portfolio at `/`, ASTER card at `/aster-card`
+## Deploy
+- **Vercel**: one-click import repo
+- **Railway**: deploy Node app (`npm run build` / `npm start`)
+- **Netlify**: Next adapter
 
----
+## Customize
+- Branding text: `src/app/page.tsx`
+- Colors / fonts: `tailwind.config.js`
+- Sections/components: `src/components/*`
+
+## Notes
+- Contact form is static. Connect to a provider (e.g., Formspree) or your backend.
