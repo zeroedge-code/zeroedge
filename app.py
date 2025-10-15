@@ -5,7 +5,7 @@ import requests, os
 app = Flask(__name__)
 
 ENTRY_PRICE = 0.70
-QUANTITY = 1000
+QUANTITY = 8096
 SYMBOL = "ASTR"
 CMC_API_KEY = os.getenv("CMC_API_KEY")
 CMC_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
