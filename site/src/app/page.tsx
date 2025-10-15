@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Reveal } from "../components/Reveal";
 import { Badge } from "../components/Badge";
 import { PortfolioCard } from "../components/PortfolioCard";
-import { LivePrice } from "../components/LivePrice";
 
 export default function Page() {
   return (
@@ -63,12 +62,7 @@ export default function Page() {
             <p className="mt-3 text-white/70">Representative holdings and public write-ups.</p>
           </Reveal>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <Reveal>
-              <div className="card p-5 space-y-2">
-                <PortfolioCard title="ASTER" subtitle="Live dashboard (Aster) →" href="https://coinmarketcap.com/currencies/aster/" />
-                <LivePrice />
-              </div>
-            </Reveal>
+            <Reveal><PortfolioCard title="ASTER" subtitle="Live dashboard (Aster) →" href="https://coinmarketcap.com/currencies/aster/" /></Reveal>
             <Reveal delay={0.05}><PortfolioCard title="Methodology" subtitle="Thesis notes & risk framework" href="#" /></Reveal>
             <Reveal delay={0.1}><PortfolioCard title="Contact for full deck" subtitle="Access on request" href="#contact" /></Reveal>
           </div>
@@ -89,7 +83,7 @@ export default function Page() {
               <textarea className="md:col-span-2 bg-black/40 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-accent/60" rows={5} placeholder="Message"></textarea>
               <button className="justify-self-start rounded-xl bg-accent px-5 py-3 font-medium hover:brightness-110 transition">Send</button>
             </form>
-            <p className="text-xs text-white/40 mt-3">Form is static by default. Connect to your backend or a form provider.</p>
+            <p className="text-xs text-white/40 mt-3">Form is static by default. Hook it to your backend or a form provider.</p>
           </div>
         </div>
       </section>

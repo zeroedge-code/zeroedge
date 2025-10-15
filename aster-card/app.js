@@ -1,6 +1,6 @@
 // === Config ===
 // CoinGecko id for ASTER. If your token differs, set COINGECKO_ID accordingly.
-const COINGECKO_ID = "aster"; // fallback guess for "ASTER" (ticker ASTR)
+const COINGECKO_ID = "astar"; // fallback guess for "ASTER" (ticker ASTR)
 const VS_CURRENCY = "usd";
 const ENTRY_PRICE = 0.70;
 const ATH_PRICE = 2.45;

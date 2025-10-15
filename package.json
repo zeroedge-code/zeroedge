@@ -1,11 +1,10 @@
 {
-  "name": "zeroedge-crypto-performance",
+  "name": "zeroedge-portfolio-full",
   "version": "1.0.0",
   "private": true,
-  "description": "ZeroEdge crypto performance card with CoinGecko + ApexCharts",
+  "description": "ZeroEdge full portfolio (site) + ASTER performance card",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2"
