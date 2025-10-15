@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,16 +35,10 @@
 <script>
 const options = {
   chart: { type: 'bar', height: 350 },
-  series: [{
-    name: 'Value ($)',
-    data: [{{ info.entry_value }}, {{ info.current_value }}]
-  }],
+  series: [{ name: 'Value ($)', data: [{{ info.entry_value }}, {{ info.current_value }}] }],
   colors: ['#0d6efd', '#198754'],
   xaxis: { categories: ['Entry Value', 'Current Value'] },
-  dataLabels: {
-    enabled: true,
-    formatter: val => "$" + val.toFixed(2)
-  }
+  dataLabels: { enabled: true, formatter: val => "$" + val.toFixed(2) }
 };
 new ApexCharts(document.querySelector("#chart"), options).render();
 </script>
