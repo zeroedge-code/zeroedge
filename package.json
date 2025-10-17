@@ -1,0 +1,16 @@
+{
+  "name": "zeroedge-aster",
+  "version": "1.0.0",
+  "description": "Cyberpunk ASTER Tracker — deployed on Railway",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
