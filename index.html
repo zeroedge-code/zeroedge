@@ -3,70 +3,181 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ZeroEdge — Portfolio</title>
-  <meta name="description" content="ZeroEdge crypto portfolio dashboard" />
+  <title>ZeroEdge — Cyberpunk ASTER Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <style>
+    :root {
+      --scan-speed: 6s;
+      --scan-brightness: 0.12;
+    }
+    body{
+      margin:0;
+      font-family:'Inter',sans-serif;
+      background:radial-gradient(circle at 30% 10%,#1a0026 0%,#050010 100%);
+      color:#e0e0ff;
+    }
+    h1{font-family:'Share Tech Mono',monospace;color:#00e5ff;text-align:center;margin:24px 0;}
+    .panel{max-width:900px;margin:0 auto;padding:16px;border:1px solid rgba(0,229,255,0.3);
+      border-radius:12px;background:rgba(0,0,20,0.6);box-shadow:0 0 25px rgba(0,229,255,0.2);}
+    .metric{font-family:'Share Tech Mono',monospace;margin:6px 0;}
+    #chart{height:400px;margin-top:20px;position:relative;}
+    @keyframes pulseGlow {
+      0%   { box-shadow:0 0 0 0 rgba(0,229,255,0.6); }
+      50%  { box-shadow:0 0 12px 6px rgba(0,229,255,0.3); }
+      100% { box-shadow:0 0 0 0 rgba(0,229,255,0); }
+    }
+    .apexcharts-marker {
+      transition: all 0.2s ease;
+    }
+    .apexcharts-marker:hover {
+      animation: pulseGlow 1.2s ease-in-out infinite;
+      transform: scale(1.3);
+      background:#00e5ff !important;
+      border:1px solid rgba(0,229,255,0.6) !important;
+    }
+    .chart-scanline {
+      position:absolute;
+      top:0;left:-50%;
+      width:40%;height:100%;
+      background:linear-gradient(90deg,
+        rgba(0,229,255,0) 0%,
+        rgba(0,229,255,var(--scan-brightness)) 50%,
+        rgba(0,229,255,0) 100%);
+      filter:blur(4px);
+      pointer-events:none;
+      animation:sweep var(--scan-speed) linear infinite;
+    }
+    @keyframes sweep {
+      0%{left:-50%;opacity:0;}
+      20%{opacity:1;}
+      50%{left:120%;opacity:1;}
+      80%{opacity:0.6;}
+      100%{left:120%;opacity:0;}
+    }
+  </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="gem">💎</div>
-      <h1>ZeroEdge</h1>
+  <h1>ASTER Portfolio (Cyberpunk HUD)</h1>
+  <div class="panel">
+    <div class="metric">Wallet: <span id="addr"></span></div>
+    <div class="metric">Balance: <span id="balance">—</span> ASTER</div>
+    <div class="metric">Price: <span id="price">—</span></div>
+    <div class="metric">Value: <span id="value">—</span></div>
+    <div class="metric">24h Change: <span id="change">—</span></div>
+    <div class="metric">Last update: <span id="updated">—</span></div>
+    <div id="chart">
+      <div class="chart-scanline"></div>
     </div>
-    <div class="metrics">
-      <div class="metric">
-        <span class="label">Portfolio Value</span>
-        <span id="totalValue" class="value">$—</span>
-      </div>
-      <div class="metric">
-        <span class="label">24h Change</span>
-        <span id="dailyChange" class="value up">—</span>
-      </div>
-      <div class="metric">
-        <span class="label">Last Update</span>
-        <span id="lastUpdated" class="value">—</span>
-      </div>
-      <button id="refreshBtn" class="refresh">Refresh</button>
+
+    <div class="controls" style="margin-top:12px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+      <label style="font-family:'Share Tech Mono',monospace;color:#00e5ff;">
+        ⚙️ Speed&nbsp;
+        <input id="speedSlider" type="range" min="2" max="15" value="6" step="0.5">
+        <span id="speedValue">6s</span>
+      </label>
+      <label style="font-family:'Share Tech Mono',monospace;color:#00e5ff;">
+        🌟 Brightness&nbsp;
+        <input id="brightSlider" type="range" min="0" max="0.4" value="0.12" step="0.01">
+        <span id="brightValue">0.12</span>
+      </label>
     </div>
-  </header>
+  </div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-left">
-        <h2>Portfolio Overview</h2>
-        <p class="muted">Live data via CoinGecko • Auto-refresh every 5 minutes</p>
-      </div>
-      <div class="hero-actions">
-        <a class="btn" href="./aster.html" target="_blank">Open ASTER Card</a>
-      </div>
-    </section>
+  <script>
+    const WALLET="0x168F5DA338aA8fD2E0d517a368E496426f8B556d";
+    const RPC="https://bsc-rpc.publicnode.com"; // ✅ CORS-friendly
+    const ASTER={
+      name:"Aster-2",
+      symbol:"ASTER",
+      contract:"0x158fAb07dc91b37E62dfbDa45EF7C884b0518FE8",
+      decimals:18,
+      entry:0.70,
+      ath:2.45
+    };
 
-    <section id="cards" class="grid"></section>
+    const provider=new ethers.providers.JsonRpcProvider(RPC,{chainId:56,name:"binance"});
+    const ERC20_ABI=["function balanceOf(address) view returns (uint256)"];
+    const fmtUSD=v=>v==null?"—":v.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:4});
+    const fmtPct=v=>`${v>0?"+":""}${v.toFixed(2)}%`;
 
-    <section class="detail">
-      <div class="detail-header">
-        <div>
-          <h3 id="detailTitle">Selected: ASTER</h3>
-          <p class="muted">180-day performance</p>
-        </div>
-        <div class="price-block">
-          <span id="detailPrice" class="price">$—</span>
-          <span id="detailBadge" class="badge">+100 %</span>
-        </div>
-      </div>
-      <div id="detailChart"></div>
-      <div class="legend">
-        <span class="dot entry"></span> Entry <span id="detailEntry">$0.70</span>
-        <span class="dot ath"></span> ATH <span id="detailAth">$2.45</span>
-      </div>
-    </section>
-  </main>
+    async function loadData(){
+      document.getElementById("addr").textContent=WALLET;
+      try{
+        const c=new ethers.Contract(ASTER.contract,ERC20_ABI,provider);
+        const raw=await c.balanceOf(WALLET);
+        const bal=Number(ethers.utils.formatUnits(raw,ASTER.decimals));
 
-  <script src="./portfolio.js"></script>
-  <script src="./app.js"></script>
+        const pData=await fetch(`https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?contract_addresses=${ASTER.contract}&vs_currencies=usd&include_24hr_change=true`).then(r=>r.json());
+        const info=pData[ASTER.contract.toLowerCase()];
+        const price=info?.usd??0;
+        const change=info?.usd_24h_change??0;
+        const val=bal*price;
+
+        document.getElementById("balance").textContent=bal.toLocaleString(undefined,{maximumFractionDigits:6});
+        document.getElementById("price").textContent=fmtUSD(price);
+        document.getElementById("value").textContent=fmtUSD(val);
+        document.getElementById("change").textContent=fmtPct(change);
+        document.getElementById("updated").textContent=new Date().toLocaleString();
+
+        const chartData=await fetch(`https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/${ASTER.contract}/market_chart?vs_currency=usd&days=180&interval=daily`).then(r=>r.json());
+        const series=(chartData.prices||[]).map(([t,p])=>({x:new Date(t),y:p}));
+
+        const options={
+          chart:{type:"area",height:400,toolbar:{show:false},foreColor:"#dfe3ea"},
+          series:[{name:"ASTER",data:series}],
+          xaxis:{type:"datetime",crosshairs:{show:true,stroke:{color:"#00e5ff",dashArray:3}}},
+          yaxis:{labels:{formatter:v=>`$${v.toFixed(3)}`}},
+          stroke:{curve:"smooth",width:2.5},
+          colors:["#9b5cff"],
+          markers:{size:3,strokeColors:"#00e5ff",strokeWidth:2,hover:{size:7,sizeOffset:3}},
+          fill:{type:"gradient",gradient:{shadeIntensity:1,opacityFrom:0.35,opacityTo:0.02,stops:[0,80,100]}},
+          grid:{borderColor:"rgba(255,255,255,0.10)",strokeDashArray:4},
+          tooltip:{
+            theme:"dark",
+            style:{fontSize:"13px",fontFamily:"Share Tech Mono, monospace"},
+            custom:({series,seriesIndex,dataPointIndex,w})=>{
+              const date=new Date(w.globals.seriesX[seriesIndex][dataPointIndex]).toLocaleDateString();
+              const val=series[seriesIndex][dataPointIndex];
+              return `<div style="background:rgba(0,0,0,0.85);border:1px solid rgba(0,229,255,0.5);border-radius:8px;
+                padding:6px 10px;color:#00e5ff;font-family:'Share Tech Mono',monospace;font-size:13px;
+                box-shadow:0 0 10px rgba(0,229,255,0.4);"><strong>${date}</strong><br>$${val.toFixed(4)}</div>`;
+            }
+          },
+          annotations:{yaxis:[
+            {y:ASTER.entry,borderColor:"#38bdf8",label:{text:`Entry $${ASTER.entry}`,style:{background:"#0b2137",color:"#e6f6ff"}}},
+            {y:ASTER.ath,borderColor:"#f59e0b",label:{text:`ATH $${ASTER.ath}`,style:{background:"#291a00",color:"#fff7e6"}}}
+          ]}
+        };
+        document.getElementById("chart").innerHTML='<div class="chart-scanline"></div>';
+        new ApexCharts(document.querySelector("#chart"),options).render();
+      }catch(e){
+        console.error(e);
+        document.getElementById("balance").textContent="Error fetching balance";
+      }
+    }
+
+    // Scanline control
+    const speedSlider=document.getElementById("speedSlider");
+    const brightSlider=document.getElementById("brightSlider");
+    const speedValue=document.getElementById("speedValue");
+    const brightValue=document.getElementById("brightValue");
+    function updateScanlineVars(){
+      document.documentElement.style.setProperty("--scan-speed",speedSlider.value+"s");
+      document.documentElement.style.setProperty("--scan-brightness",brightSlider.value);
+      speedValue.textContent=speedSlider.value+"s";
+      brightValue.textContent=brightSlider.value;
+    }
+    speedSlider.addEventListener("input",updateScanlineVars);
+    brightSlider.addEventListener("input",updateScanlineVars);
+    updateScanlineVars();
+
+    loadData();
+    setInterval(loadData,5*60*1000);
+  </script>
 </body>
 </html>
